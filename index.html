@@ -1,30 +1,1173 @@
 <!DOCTYPE html>
-<html>
+<html lang="so">
 <head>
-    <title>My Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Cumar Dashboard</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #172033;
+      transition: .3s;
+    }
+
+    body.dark {
+      background: #101827;
+      color: #f5f7fa;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 250px;
+      background: #111827;
+      color: white;
+      padding: 25px 18px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 20;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: bold;
+      margin-bottom: 35px;
+      text-align: center;
+    }
+
+    .logo span {
+      color: #60a5fa;
+    }
+
+    .nav-btn {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: #cbd5e1;
+      padding: 14px 16px;
+      margin: 5px 0;
+      border-radius: 10px;
+      text-align: left;
+      font-size: 16px;
+    }
+
+    .nav-btn:hover,
+    .nav-btn.active {
+      background: #2563eb;
+      color: white;
+    }
+
+    /* MAIN */
+    .main {
+      margin-left: 250px;
+      width: calc(100% - 250px);
+      padding: 25px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .topbar h1 {
+      font-size: 28px;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .top-actions button {
+      border: 0;
+      padding: 11px 15px;
+      border-radius: 10px;
+      background: white;
+      box-shadow: 0 2px 10px #dfe4ec;
+    }
+
+    body.dark .top-actions button {
+      background: #1e293b;
+      color: white;
+    }
+
+    .search {
+      width: 280px;
+      padding: 12px;
+      border: 1px solid #d7deea;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    /* SECTIONS */
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    /* CARDS */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 25px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 22px;
+      border-radius: 16px;
+      box-shadow: 0 5px 20px rgba(0,0,0,.06);
+    }
+
+    body.dark .stat-card,
+    body.dark .panel,
+    body.dark .project-card,
+    body.dark .skill-card {
+      background: #1e293b;
+      color: white;
+    }
+
+    .stat-card small {
+      color: #64748b;
+    }
+
+    body.dark .stat-card small {
+      color: #cbd5e1;
+    }
+
+    .stat-number {
+      font-size: 30px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .panel {
+      background: white;
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,.06);
+    }
+
+    .panel-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    /* PROJECTS */
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .toolbar input,
+    .toolbar select,
+    .form-control {
+      padding: 12px;
+      border: 1px solid #d5dce8;
+      border-radius: 9px;
+      background: white;
+      outline: none;
+      width: 100%;
+    }
+
+    .toolbar input {
+      max-width: 300px;
+    }
+
+    .toolbar select {
+      max-width: 190px;
+    }
+
+    .primary {
+      background: #2563eb !important;
+      color: white !important;
+      border: 0 !important;
+      padding: 12px 18px;
+      border-radius: 9px;
+    }
+
+    .danger {
+      background: #dc2626 !important;
+      color: white !important;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .project-card,
+    .skill-card {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,.06);
+    }
+
+    .project-img {
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 50px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      background-size: cover;
+      background-position: center;
+    }
+
+    .project-body {
+      padding: 18px;
+    }
+
+    .project-body h3 {
+      margin-bottom: 8px;
+    }
+
+    .project-body p {
+      color: #64748b;
+      line-height: 1.5;
+      min-height: 45px;
+    }
+
+    body.dark .project-body p {
+      color: #cbd5e1;
+    }
+
+    .tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 15px 0;
+    }
+
+    .tag,
+    .status {
+      padding: 6px 9px;
+      border-radius: 20px;
+      background: #dbeafe;
+      color: #1d4ed8;
+      font-size: 12px;
+    }
+
+    .status {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .status.progress {
+      background: #fef3c7;
+      color: #a16207;
+    }
+
+    .status.idea {
+      background: #f3e8ff;
+      color: #7e22ce;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .icon-btn {
+      border: 0;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: #eef2f7;
+    }
+
+    body.dark .icon-btn {
+      background: #334155;
+      color: white;
+    }
+
+    /* SKILLS */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .skill-card {
+      padding: 20px;
+    }
+
+    .level {
+      margin: 10px 0;
+      font-weight: bold;
+    }
+
+    .bar {
+      height: 9px;
+      background: #e5e7eb;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      background: #2563eb;
+      border-radius: 20px;
+    }
+
+    .skill-row {
+      margin-bottom: 18px;
+    }
+
+    .skill-top {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 7px;
+    }
+
+    /* MINI PROJECTS */
+    .mini {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .mini-img {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      background: #dbeafe;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .mini strong,
+    .mini small {
+      display: block;
+    }
+
+    .mini small {
+      color: #64748b;
+      margin-top: 5px;
+    }
+
+    /* PROFILE */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 7px;
+      font-weight: bold;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    textarea.form-control {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    /* MODAL */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.6);
+      z-index: 50;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 550px;
+      background: white;
+      border-radius: 16px;
+      padding: 25px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    body.dark .modal-box {
+      background: #1e293b;
+      color: white;
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .close {
+      border: 0;
+      background: transparent;
+      font-size: 25px;
+    }
+
+    body.dark .close {
+      color: white;
+    }
+
+    /* TOAST */
+    #toast {
+      position: fixed;
+      right: 25px;
+      bottom: 25px;
+      background: #111827;
+      color: white;
+      padding: 14px 20px;
+      border-radius: 10px;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: .3s;
+      z-index: 100;
+    }
+
+    #toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    #menuBtn {
+      display: none;
+    }
+
+    @media (max-width: 1000px) {
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .projects-grid,
+      .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .sidebar {
+        transform: translateX(-100%);
+        transition: .3s;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 15px;
+      }
+
+      #menuBtn {
+        display: block;
+      }
+
+      .topbar {
+        flex-wrap: wrap;
+      }
+
+      .search {
+        width: 100%;
+      }
+
+      .stats,
+      .projects-grid,
+      .skills-grid,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .full {
+        grid-column: auto;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-    <h1>Ku Soo Dhawoow Dashboard-kayga</h1>
+<div class="app">
 
-    <h2>About Me</h2>
-    <p>Magacaygu waa Cumar. Waxaan baranayaa programming iyo website development.</p>
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
 
-    <h2>My Skills</h2>
-    <ul>
-        <li>Python</li>
-        <li>HTML</li>
-        <li>CSS</li>
-        <li>JavaScript</li>
-    </ul>
+    <div class="logo">
+      Cumar <span>Dashboard</span>
+    </div>
 
-    <h2>My Projects</h2>
-    <p>Halkan waxaan ku soo bandhigi doonaa projects-ka aan sameeyo.</p>
+    <button class="nav-btn active" data-section="dashboard">
+      🏠 Dashboard
+    </button>
 
-    <h2>Contact</h2>
-    <p>Waad ila soo xiriiri kartaa.</p>
+    <button class="nav-btn" data-section="projects">
+      📁 My Projects
+    </button>
+
+    <button class="nav-btn" data-section="skills">
+      💻 My Skills
+    </button>
+
+    <button class="nav-btn" data-section="profile">
+      👤 My Profile
+    </button>
+
+    <button class="nav-btn" data-section="settings">
+      ⚙️ Settings
+    </button>
+
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+
+      <div>
+        <button id="menuBtn" class="icon-btn">
+          ☰
+        </button>
+
+        <h1 id="pageTitle">
+          Dashboard
+        </h1>
+
+        <p>
+          Ku soo dhawoow dashboard-kaaga 👋
+        </p>
+      </div>
+
+      <div class="top-actions">
+
+        <input
+          id="globalSearch"
+          class="search"
+          type="search"
+          placeholder="🔎 Search..."
+        >
+
+        <button id="themeBtn">
+          🌙
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="section active">
+
+      <div class="stats">
+
+        <div class="stat-card">
+          <small>Projects</small>
+          <div id="projectCount" class="stat-number">
+            0
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <small>Skills</small>
+          <div id="skillCount" class="stat-number">
+            0
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <small>Completed</small>
+          <div id="completedCount" class="stat-number">
+            0
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <small>Progress</small>
+          <div id="progressCount" class="stat-number">
+            0%
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <div class="panel-title">
+          <h2>Recent Projects</h2>
+
+          <button
+            class="primary"
+            data-section-jump="projects"
+          >
+            View All
+          </button>
+        </div>
+
+        <div id="recentProjects"></div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <div class="panel-title">
+          <h2>My Skills</h2>
+        </div>
+
+        <div id="dashboardSkills"></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- PROJECTS -->
+    <section id="projects" class="section">
+
+      <div class="panel">
+
+        <div class="panel-title">
+
+          <div>
+            <h2>My Projects</h2>
+            <p>Ku dar, raadi, edit ama tirtir projects-kaaga.</p>
+          </div>
+
+          <button
+            id="addProjectBtn"
+            class="primary"
+          >
+            + Add Project
+          </button>
+
+        </div>
+
+
+        <div class="toolbar">
+
+          <input
+            id="projectSearch"
+            type="search"
+            placeholder="🔎 Search projects..."
+          >
+
+          <select id="categoryFilter">
+
+            <option value="all">
+              All Categories
+            </option>
+
+            <option value="Website">
+              Website
+            </option>
+
+            <option value="Python">
+              Python
+            </option>
+
+            <option value="Design">
+              Design
+            </option>
+
+          </select>
+
+
+          <select id="statusFilter">
+
+            <option value="all">
+              All Status
+            </option>
+
+            <option value="Completed">
+              Completed
+            </option>
+
+            <option value="In Progress">
+              In Progress
+            </option>
+
+            <option value="Idea">
+              Idea
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div
+          id="projectsGrid"
+          class="projects-grid"
+        ></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- SKILLS -->
+    <section id="skills" class="section">
+
+      <div class="panel">
+
+        <div class="panel-title">
+
+          <div>
+            <h2>My Skills</h2>
+            <p>Maamul skills-kaaga iyo heerka aad ka joogto.</p>
+          </div>
+
+          <button
+            id="addSkillBtn"
+            class="primary"
+          >
+            + Add Skill
+          </button>
+
+        </div>
+
+        <div
+          id="skillsGrid"
+          class="skills-grid"
+        ></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- PROFILE -->
+    <section id="profile" class="section">
+
+      <div class="panel">
+
+        <div class="panel-title">
+          <div>
+            <h2>My Profile</h2>
+            <p>Halkan waxaad ka beddeli kartaa xogtaada.</p>
+          </div>
+        </div>
+
+
+        <div class="form-grid">
+
+          <div class="form-group">
+
+            <label>
+              Magaca
+            </label>
+
+            <input
+              id="profileName"
+              class="form-control"
+              type="text"
+              placeholder="Magacaaga"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Email
+            </label>
+
+            <input
+              id="profileEmail"
+              class="form-control"
+              type="email"
+              placeholder="email@example.com"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Phone
+            </label>
+
+            <input
+              id="profilePhone"
+              class="form-control"
+              type="text"
+              placeholder="+252..."
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Website
+            </label>
+
+            <input
+              id="profileWebsite"
+              class="form-control"
+              type="text"
+              placeholder="Website-kaaga"
+            >
+
+          </div>
+
+
+          <div class="form-group full">
+
+            <label>
+              About Me
+            </label>
+
+            <textarea
+              id="profileAbout"
+              class="form-control"
+              placeholder="Wax yar iga qor..."
+            ></textarea>
+
+          </div>
+
+        </div>
+
+
+        <button
+          id="saveProfileBtn"
+          class="primary"
+        >
+          💾 Save Profile
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- SETTINGS -->
+    <section id="settings" class="section">
+
+      <div class="panel">
+
+        <h2>Settings</h2>
+
+        <p style="margin:15px 0;">
+          Halkan waxaad ka maamuli kartaa dashboard-kaaga.
+        </p>
+
+        <button
+          id="resetBtn"
+          class="primary danger"
+        >
+          🔄 Reset Demo Data
+        </button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<!-- PROJECT MODAL -->
+<div
+  id="projectModal"
+  class="modal"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+
+      <h2 id="projectModalTitle">
+        Add Project
+      </h2>
+
+      <button
+        class="close"
+        data-close="projectModal"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="projectForm">
+
+      <input
+        id="projectId"
+        type="hidden"
+      >
+
+
+      <div class="form-group">
+
+        <label>
+          Project Name
+        </label>
+
+        <input
+          id="projectName"
+          class="form-control"
+          type="text"
+          required
+          placeholder="Magaca project-ka"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Description
+        </label>
+
+        <textarea
+          id="projectDescription"
+          class="form-control"
+          required
+          placeholder="Sharax project-ka..."
+        ></textarea>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Category
+        </label>
+
+        <select
+          id="projectCategory"
+          class="form-control"
+        >
+
+          <option value="Website">
+            Website
+          </option>
+
+          <option value="Python">
+            Python
+          </option>
+
+          <option value="Design">
+            Design
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Status
+        </label>
+
+        <select
+          id="projectStatus"
+          class="form-control"
+        >
+
+          <option value="Completed">
+            Completed
+          </option>
+
+          <option value="In Progress">
+            In Progress
+          </option>
+
+          <option value="Idea">
+            Idea
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Image URL
+        </label>
+
+        <input
+          id="projectImage"
+          class="form-control"
+          type="text"
+          placeholder="https://..."
+        >
+
+      </div>
+
+
+      <button
+        class="primary"
+        type="submit"
+      >
+        💾 Save Project
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- SKILL MODAL -->
+<div
+  id="skillModal"
+  class="modal"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+
+      <h2 id="skillModalTitle">
+        Add Skill
+      </h2>
+
+      <button
+        class="close"
+        data-close="skillModal"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="skillForm">
+
+      <input
+        id="skillId"
+        type="hidden"
+      >
+
+
+      <div class="form-group">
+
+        <label>
+          Skill Name
+        </label>
+
+        <input
+          id="skillName"
+          class="form-control"
+          type="text"
+          required
+          placeholder="Python, HTML..."
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Level: <span id="levelValue">70</span>%
+        </label>
+
+        <input
+          id="skillLevel"
+          type="range"
+          min="0"
+          max="100"
+          value="70"
+          style="width:100%;"
+        >
+
+      </div>
+
+
+      <button
+        class="primary"
+        type="submit"
+      >
+        💾 Save Skill
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<div id="toast"></div>
+
+
+<!-- JAVASCRIPT -->
+<script src="script.js"></script>
 
 </body>
 </html>
